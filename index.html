@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NYUSHDIC · Digital Innovation Community</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=VT323&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================= */
+/*  🎨  COLOR CONTROL PANEL                                       */
+/*  Change any value here → updates the whole site.              */
+/* ============================================================= */
+:root{
+  /* surfaces */
+  --bg:            #F3EEE3;
+  --panel:         #FFFFFF;
+  --ink:           #16130E;
+  --ink-soft:      #5C554A;
+  --line:          #16130E;
+
+  /* the playful accent set */
+  --blue:          #2F5CFF;
+  --coral:         #FF5A4D;
+  --yellow:        #FFC93C;
+  --mint:          #3AD29F;
+  --lilac:         #9B7BFF;
+
+  /* semantic roles (built from the set above) */
+  --accent:        var(--coral);  /* 👈 primary accent: hero shadow, chrome bars, CTAs */
+  --header-accent: var(--blue);   /* section header "Q" tab */
+  --bar-accent:    var(--blue);   /* recap loading-bar fill */
+
+  /* structure */
+  --radius:        0px;
+  --shadow:        6px 6px 0 var(--line);
+  --shadow-sm:     3px 3px 0 var(--line);
+}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Space Grotesk','Noto Sans SC',sans-serif;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  background-image:radial-gradient(var(--ink) 0.6px, transparent 0.6px);
+  background-size:22px 22px;
+}
+img{max-width:100%;display:block}
+.wrap{max-width:760px;margin:0 auto;padding:0 18px 90px}
+
+/* ---------- entrance animation ---------- */
+@keyframes rise{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0}
+.reveal.in{animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+
+/* ---------- reusable window chrome ---------- */
+.titlebar{
+  display:flex;align-items:center;gap:8px;
+  background:var(--accent);
+  border:2px solid var(--line);border-bottom:none;
+  padding:6px 10px;color:#fff;font-weight:700;font-size:13px;letter-spacing:.02em;
+}
+.titlebar .dots{display:flex;gap:5px}
+.titlebar .dots i{width:12px;height:12px;border:2px solid var(--line);background:#fff;display:block}
+.titlebar .t-title{margin-left:auto;text-transform:uppercase;font-size:12px}
+
+/* ============================================================= */
+/*  HERO                                                          */
+/* ============================================================= */
+.hero{padding:66px 0 42px;text-align:center;position:relative}
+.hero .kicker{font-family:'VT323',monospace;font-size:22px;color:var(--blue);letter-spacing:.06em;margin-bottom:14px}
+/* ---- playful wordmark: each letter placed by hand ---- */
+.wordmark{
+  font-family:'Space Grotesk';font-weight:700;
+  font-size:clamp(54px,15vw,120px);line-height:.9;
+  display:flex;justify-content:center;align-items:flex-end;flex-wrap:wrap;
+  gap:0;letter-spacing:0;
+}
+.wordmark .ch{
+  display:inline-block;position:relative;
+  padding:0 .01em;
+  /* hard offset shadow drawn with text-shadow so each letter carries its own */
+  transition:transform .18s ease;
+  will-change:transform;
+}
+/* per-letter colour, rotation, vertical jitter, and a matching hard shadow */
+.wordmark .c1{color:var(--ink);   transform:rotate(-6deg) translateY(6px);  text-shadow:4px 4px 0 var(--coral);}
+.wordmark .c2{color:var(--coral); transform:rotate(4deg)  translateY(-8px); text-shadow:4px 4px 0 var(--ink);}
+.wordmark .c3{color:var(--blue);  transform:rotate(-3deg) translateY(4px);  text-shadow:4px 4px 0 var(--ink);}
+.wordmark .c4{color:var(--ink);   transform:rotate(7deg)  translateY(-4px); text-shadow:4px 4px 0 var(--mint);}
+.wordmark .c5{color:var(--lilac); transform:rotate(-5deg) translateY(8px);  text-shadow:4px 4px 0 var(--ink);}
+.wordmark .c6{color:var(--ink);   transform:rotate(3deg)  translateY(-6px); text-shadow:4px 4px 0 var(--yellow);}
+.wordmark .c7{color:var(--mint);  transform:rotate(-8deg) translateY(2px);  text-shadow:4px 4px 0 var(--ink);}
+.wordmark .c8{color:var(--coral); transform:rotate(5deg)  translateY(-8px); text-shadow:4px 4px 0 var(--blue);}
+/* gentle idle wobble, staggered per letter */
+@keyframes wob{0%,100%{transform:var(--r) translateY(var(--y));}50%{transform:var(--r) translateY(calc(var(--y) - 5px)) rotate(2deg);}}
+.wordmark .ch{animation:wob 3.2s ease-in-out infinite;}
+.wordmark .c1{--r:rotate(-6deg);--y:6px;animation-delay:0s}
+.wordmark .c2{--r:rotate(4deg);--y:-8px;animation-delay:.15s}
+.wordmark .c3{--r:rotate(-3deg);--y:4px;animation-delay:.3s}
+.wordmark .c4{--r:rotate(7deg);--y:-4px;animation-delay:.45s}
+.wordmark .c5{--r:rotate(-5deg);--y:8px;animation-delay:.6s}
+.wordmark .c6{--r:rotate(3deg);--y:-6px;animation-delay:.75s}
+.wordmark .c7{--r:rotate(-8deg);--y:2px;animation-delay:.9s}
+.wordmark .c8{--r:rotate(5deg);--y:-8px;animation-delay:1.05s}
+/* playful hover: letter pops upright */
+.wordmark .ch:hover{transform:rotate(0deg) translateY(-10px) scale(1.12);z-index:5;cursor:default;}
+.hero .sub{margin-top:22px;font-family:'VT323',monospace;font-size:24px;color:var(--ink-soft)}
+.hero .cursor{display:inline-block;width:11px;height:24px;background:var(--ink);margin-left:2px;vertical-align:-4px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.stickers{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:30px}
+.sticker{font-family:'VT323',monospace;font-size:18px;border:2px solid var(--line);padding:3px 12px;box-shadow:var(--shadow-sm)}
+.sticker:nth-child(1){background:var(--yellow);transform:rotate(-2deg)}
+.sticker:nth-child(2){background:var(--mint);transform:rotate(1.5deg)}
+.sticker:nth-child(3){background:var(--lilac);color:#fff;transform:rotate(-1deg)}
+.sticker:nth-child(4){background:var(--coral);color:#fff;transform:rotate(2deg)}
+
+/* ============================================================= */
+/*  SECTION HEADER                                                */
+/* ============================================================= */
+.section{margin-top:74px}
+.sec-head{display:flex;border:2px solid var(--line);box-shadow:var(--shadow-sm);margin-bottom:26px}
+.sec-head .q{background:var(--header-accent);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;width:56px;font-size:20px;border-right:2px solid var(--line)}
+.sec-head .label{flex:1;background:var(--panel);display:flex;align-items:center;padding:0 18px;font-weight:600;font-size:clamp(18px,4.4vw,24px);color:var(--header-accent)}
+.sec-head .label .zh{color:var(--ink);margin-left:10px;font-weight:500;font-size:.72em}
+
+/* ---------- shared prose ---------- */
+p{font-size:16px;margin-bottom:16px}
+.en{font-family:'Space Grotesk';color:var(--ink-soft);font-size:15px}
+.hl{background:var(--yellow);padding:0 4px;font-weight:700;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.hl.b{background:var(--blue);color:#fff}
+.hl.m{background:var(--mint)}
+.hl.c{background:var(--coral);color:#fff}
+strong{font-weight:700}
+
+/* ============================================================= */
+/*  WHO ARE WE — region pins                                      */
+/* ============================================================= */
+.regions{margin-top:24px;border:2px dashed var(--line);padding:18px 16px;background:var(--panel)}
+.regions .cap{font-family:'VT323',monospace;font-size:18px;color:var(--ink-soft);margin-bottom:12px;display:block}
+.pin-row{display:flex;flex-wrap:wrap;gap:10px}
+.pin{position:relative;font-weight:600;font-size:14px;border:2px solid var(--line);padding:5px 12px 5px 26px;background:var(--panel);box-shadow:var(--shadow-sm)}
+.pin::before{content:"";position:absolute;left:9px;top:50%;transform:translateY(-50%);width:9px;height:9px;border-radius:50%;background:var(--coral);border:2px solid var(--line)}
+.pin:nth-child(2)::before{background:var(--blue)}
+.pin:nth-child(3)::before{background:var(--yellow)}
+.pin:nth-child(4)::before{background:var(--mint)}
+.pin:nth-child(5)::before{background:var(--lilac)}
+.pin.more{background:var(--ink);color:#fff;padding-left:12px}
+.pin.more::before{display:none}
+
+/* ============================================================= */
+/*  WHAT WE DO — recap as introduction                           */
+/* ============================================================= */
+.lead{border-left:5px solid var(--accent);padding-left:16px;margin-bottom:24px}
+.lead p{font-size:17px}
+
+/* the "year loading bar" */
+.loadbar-wrap{border:2px solid var(--line);box-shadow:var(--shadow);background:var(--panel);margin:30px 0}
+.loadbar-head{background:var(--ink);color:#fff;font-family:'VT323',monospace;font-size:17px;padding:6px 12px;display:flex;justify-content:space-between}
+.loadbar{padding:18px 14px}
+.loadbar .bar{height:26px;border:2px solid var(--line);background:var(--panel);overflow:hidden}
+.loadbar .bar .fill{display:block;height:100%;width:0;background:var(--bar-accent);
+  background-image:repeating-linear-gradient(90deg,transparent 0 18px,rgba(255,255,255,.35) 18px 22px);
+  transition:width 1.6s cubic-bezier(.2,.7,.2,1)}
+.loadbar .bar .fill.go{width:100%}
+.loadbar .pct{font-family:'VT323',monospace;font-size:16px;margin-top:8px;color:var(--ink-soft)}
+
+/* stat tiles */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:12px}
+.stat{border:2px solid var(--line);box-shadow:var(--shadow-sm);padding:16px 14px}
+.stat:nth-child(1){background:var(--blue);color:#fff}
+.stat:nth-child(2){background:var(--coral);color:#fff}
+.stat:nth-child(3){background:var(--yellow)}
+.stat:nth-child(4){background:var(--mint)}
+.stat .num{font-weight:700;font-size:40px;line-height:1}
+.stat .cap{font-family:'VT323',monospace;font-size:17px;margin-top:4px}
+.stats-note{font-family:'VT323',monospace;font-size:16px;color:var(--ink-soft);margin:8px 0 30px}
+
+/* subsection heading inside recap */
+.sub-h{display:flex;align-items:center;gap:10px;margin:34px 0 14px;font-weight:700;font-size:20px}
+.sub-h .tag{font-family:'VT323',monospace;font-size:16px;background:var(--ink);color:#fff;padding:1px 9px;border:2px solid var(--line)}
+.sub-h .zh{font-weight:500;color:var(--ink-soft);font-size:.8em}
+
+/* tracks row */
+.tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 8px}
+.track{border:2px solid var(--line);box-shadow:var(--shadow-sm);background:var(--panel);padding:16px 12px;text-align:center}
+.track .ic{font-size:30px;line-height:1}
+.track .en{font-weight:700;font-size:17px;color:var(--ink);margin-top:8px;font-family:'Space Grotesk'}
+.track .zh{font-size:14px;color:var(--ink-soft)}
+.track:nth-child(1){background:linear-gradient(180deg,#fff, #FFF6E0)}
+.track:nth-child(2){background:linear-gradient(180deg,#fff, #FFEAE7)}
+.track:nth-child(3){background:linear-gradient(180deg,#fff, #E6FBF3)}
+
+/* partners strip */
+.partners{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 8px}
+.chip{font-weight:600;font-size:14px;border:2px solid var(--line);background:var(--panel);padding:5px 12px;box-shadow:var(--shadow-sm)}
+.chip.dku{background:var(--lilac);color:#fff}
+
+/* real photo figure */
+.photo-figure{margin:22px 0}
+.photo-frame{border:2px solid var(--line);box-shadow:var(--shadow);background:var(--panel);padding:6px;line-height:0}
+.photo-frame img{width:100%;display:block;border:2px solid var(--line)}
+.photo-figure figcaption{font-family:'VT323',monospace;font-size:16px;color:var(--ink-soft);margin-top:8px;text-align:center}
+
+/* two photos side by side */
+.photo-pair{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+.photo-pair .pair-item{margin:0}
+.photo-pair .pair-item .photo-frame img{aspect-ratio:4/3;object-fit:cover}
+.photo-pair figcaption{font-family:'VT323',monospace;font-size:15px;color:var(--ink-soft);margin-top:8px;text-align:center}
+
+/* image slots */
+.img-slot{border:2px solid var(--line);box-shadow:var(--shadow);aspect-ratio:16/10;
+  background:repeating-linear-gradient(-45deg,var(--line) 0 2px,transparent 2px 16px),var(--panel);
+  display:flex;align-items:center;justify-content:center;margin:22px 0}
+.img-slot .ph-note{font-family:'VT323',monospace;font-size:18px;color:var(--ink);background:var(--yellow);border:2px solid var(--line);padding:8px 16px;text-align:center}
+.img-slot.two{aspect-ratio:auto;padding:0;background:none;border:none;box-shadow:none;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.img-slot.two > div{aspect-ratio:4/3;border:2px solid var(--line);box-shadow:var(--shadow-sm);
+  background:repeating-linear-gradient(-45deg,var(--line) 0 2px,transparent 2px 16px),var(--panel);
+  display:flex;align-items:center;justify-content:center}
+.img-slot.two > div .ph-note{background:var(--panel);font-size:15px;padding:6px 10px}
+
+/* pull-quote from provost/dean */
+.quote{border:2px solid var(--line);box-shadow:var(--shadow);background:var(--panel);margin:24px 0}
+.quote .qt-body{padding:20px 22px 18px;position:relative}
+.quote .mark{font-family:'Space Grotesk';font-weight:700;font-size:52px;line-height:.4;color:var(--accent);display:block;height:26px}
+.quote blockquote{font-size:16px;font-style:italic;margin:10px 0 10px;padding-left:14px;border-left:3px solid var(--accent)}
+.quote blockquote.en-quote{font-size:14px;color:var(--ink-soft);margin-bottom:14px}
+.quote .who{font-family:'Space Grotesk';font-size:12px;line-height:1.4;color:var(--ink-soft)}
+.quote .who b{color:var(--ink);font-weight:700}
+.quote .who-zh{font-family:'Noto Sans SC';font-size:11.5px;color:var(--ink-soft)}
+
+/* ============================================================= */
+/*  JOIN US                                                       */
+/* ============================================================= */
+.join-win{border:2px solid var(--line);box-shadow:var(--shadow);background:var(--panel)}
+.join-body{padding:26px 22px;display:flex;gap:26px;align-items:center;flex-wrap:wrap;justify-content:center}
+.qr-box{flex:0 0 auto;border:2px solid var(--line);box-shadow:var(--shadow-sm);padding:8px;background:#fff}
+.qr-box img{width:158px;height:158px;display:block}
+.qr-cap{font-family:'VT323',monospace;font-size:15px;text-align:center;margin-top:6px;color:var(--ink-soft)}
+.join-text{flex:1;min-width:220px}
+.join-text .big{font-weight:700;font-size:26px;line-height:1.12;margin-bottom:8px}
+.join-text .big small{font-size:18px;font-weight:500;color:var(--ink-soft)}
+.join-text .en{margin-bottom:16px}
+.contacts{display:flex;flex-direction:column;gap:10px}
+.contact{display:inline-flex;align-items:center;gap:10px;border:2px solid var(--line);box-shadow:var(--shadow-sm);padding:8px 14px;font-family:'VT323',monospace;font-size:20px;width:fit-content;color:inherit;text-decoration:none}
+.contact.mail{background:var(--yellow)}
+.contact.web{background:var(--blue);color:#fff}
+.contact.red{background:var(--coral);color:#fff}
+.contact .k{font-family:'Space Grotesk';font-weight:700;font-size:12px;text-transform:uppercase;letter-spacing:.05em;opacity:.75}
+
+/* ============================================================= */
+/*  TASKBAR FOOTER                                                */
+/* ============================================================= */
+.taskbar{margin-top:70px;border:2px solid var(--line);background:var(--panel);box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;padding:8px 12px;font-family:'VT323',monospace;font-size:18px}
+.taskbar .start{background:var(--blue);color:#fff;border:2px solid var(--line);padding:2px 14px;font-weight:700}
+.taskbar .clock{margin-left:auto;border:2px solid var(--line);padding:2px 12px;background:var(--panel)}
+
+/* ---------- responsive ---------- */
+@media(max-width:600px){
+  .stats{grid-template-columns:1fr}
+  .tracks{grid-template-columns:1fr}
+  .img-slot.two{grid-template-columns:1fr}
+  .photo-pair{grid-template-columns:1fr}
+  .wordmark{font-size:clamp(46px,17vw,72px)}
+  .wordmark .ch{text-shadow-offset:3px;}
+}
+@media(prefers-reduced-motion:reduce){
+  .hero .cursor{animation:none}
+  .wordmark .ch{animation:none}
+  .reveal{opacity:1!important;animation:none!important}
+  .loadbar .bar .fill{transition:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===================== HERO ===================== -->
+  <header class="hero reveal">
+    <div class="kicker">// boot sequence complete_</div>
+    <h1 class="wordmark" aria-label="NYUSHDIC">
+      <span class="ch c1">N</span><span class="ch c2">Y</span><span class="ch c3">U</span><span class="ch c4">S</span><span class="ch c5">H</span><span class="ch c6">D</span><span class="ch c7">I</span><span class="ch c8">C</span>
+    </h1>
+    <div class="sub">Digital · Innovation · Community<span class="cursor"></span></div>
+    <div class="stickers">
+      <span class="sticker">EST. 2021</span>
+      <span class="sticker">跨学科</span>
+      <span class="sticker">AI × 创新</span>
+      <span class="sticker">5th EDITION</span>
+    </div>
+  </header>
+
+  <!-- ===================== WHO ARE WE ===================== -->
+  <section class="section who reveal">
+    <div class="sec-head">
+      <div class="q">Q</div>
+      <div class="label">Who are we?<span class="zh">我们是谁</span></div>
+    </div>
+
+    <p>
+      NYUSHDIC 是<span class="hl">科技爱好者不可错过</span>的社群。我们来自上海纽约大学
+      计算机科学、交互媒体艺术、商科与金融、数学、数据科学等专业，用不同的学科视角，
+      共同追问同一个问题：<strong>人工智能能为现实世界解决什么？</strong>
+    </p>
+    <p>
+      从一群学生自发创办，到如今连续举办五届的旗舰赛事，我们始终相信一件事——
+      <span class="hl b">多元</span>让创新更有力量。不同的专业背景，让我们的赛制设计、评审标准
+      更全面；而不同的地域与文化背景，则让每一次比赛都成为真正的思想碰撞。
+    </p>
+    <p>
+      我们从不把自己局限在一所学校、一座城市。去年，来自六个国家、数十所高校的选手
+      与我们并肩创作。我们想把 DIC 建成一个<span class="hl c">跨区域</span>的创新舞台：
+      以上海纽约大学为起点，辐射整个长三角，也向更远的地方敞开。
+    </p>
+    <p class="en">
+      We're a community of NYU Shanghai students spanning Computer Science, Interactive Media Arts,
+      Business &amp; Finance, Mathematics and Data Science — asking one shared question: what can AI
+      actually solve in the real world? Diversity is our default setting. Different disciplines make our
+      competition design sharper; different regions and cultures make every edition a genuine collision of
+      ideas. We're building DIC into a cross-regional stage — rooted at NYU Shanghai, reaching across the
+      Yangtze River Delta, and open to far beyond.
+    </p>
+
+    <div class="regions">
+      <span class="cap">&gt; connected_nodes // 我们连接的地方</span>
+      <div class="pin-row">
+        <span class="pin">NYU Shanghai 上纽大</span>
+        <span class="pin">Shanghai 上海</span>
+        <span class="pin">昆山杜克大学 DKU</span>
+        <span class="pin">长三角 YRD</span>
+        <span class="pin more">+ 更多地区 &amp; beyond</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT WE DO (RECAP AS INTRO) ===================== -->
+  <section class="section recap reveal">
+    <div class="sec-head">
+      <div class="q">Q</div>
+      <div class="label">What do we do?<span class="zh">我们做什么</span></div>
+    </div>
+
+    <div class="lead">
+      <p>
+        每一年，DIC 的重头戏都是<strong>数字化创新大赛（Digital Innovation Challenge）</strong>——
+        一项以技术驱动的创新赛事，鼓励跨学科团队运用前沿数字技术探索现实问题的解决方案，
+        以技术回馈社会。
+      </p>
+      <p class="en">
+        Every year, the heart of DIC is the <strong>Digital Innovation Challenge</strong> — a
+        technology-driven competition that invites interdisciplinary teams to tackle real-world problems
+        with cutting-edge digital tools, and to give back to society through what they build.
+      </p>
+    </div>
+
+    <p>
+      刚刚落幕的第五届大赛以 <span class="hl b">"AI Agent Unlock Business Innovation"</span>
+      （AI 智能体解锁商业创新）为主题，聚焦具备感知、推理、自主行动与持续学习能力的 AI Agents，
+      探讨它们在商业与社会中的真实应用。本届大赛由上纽大 DIC 学生社团主办，获上纽大
+      <strong>计算机科学、数据科学与工程学部</strong>及<strong>数据科学中心</strong>全程指导，
+      并与多家行业伙伴携手。
+    </p>
+    <p class="en">
+      Our just-concluded 5th edition, themed <em>"AI Agent Unlock Business Innovation,"</em> focused on
+      AI agents that perceive, reason, act autonomously and keep learning — and how they create real value
+      in business and society. It was hosted by the DIC student club, guided throughout by NYU Shanghai's
+      Computer Science, Data Science and Engineering faculty and its Data Science center, and powered by
+      industry partners.
+    </p>
+
+    <!-- year loading bar -->
+    <div class="loadbar-wrap">
+      <div class="loadbar-head"><span>DIC_5th_edition.run</span><span>■ complete</span></div>
+      <div class="loadbar">
+        <div class="bar"><span class="fill" id="fill"></span></div>
+        <div class="pct" id="pct">rendering last year...</div>
+      </div>
+    </div>
+
+    <!-- big image slot: Innovation Day group photo -->
+    <figure class="photo-figure">
+      <div class="photo-frame"><img id="group" src="assets/group.jpg" alt="DIC Innovation Day group photo · 数字化创新大赛创新日合影"></div>
+      <figcaption>Innovation Day · 创新日现场合影</figcaption>
+    </figure>
+
+    <!-- stat tiles -->
+    <div class="stats">
+      <div class="stat"><div class="num">75</div><div class="cap">支参赛队伍 teams</div></div>
+      <div class="stat"><div class="num">6</div><div class="cap">个国家 countries</div></div>
+      <div class="stat"><div class="num">9</div><div class="cap">支队伍晋级决赛 finalists</div></div>
+      <div class="stat"><div class="num">~5</div><div class="cap">个月赛程 months</div></div>
+    </div>
+    <div class="stats-note">&gt; 参赛者来自康奈尔、芝加哥、杜克等海内外高校 // incl. Cornell · UChicago · Duke</div>
+
+    <!-- SUBSECTION: three tracks -->
+    <div class="sub-h"><span class="tag">01</span>三大赛道<span class="zh">Three Tracks</span></div>
+    <p>
+      大赛设立<strong>教育、医疗、金融</strong>三大赛道，要求团队以人工智能为基础，立足现实需求
+      提出创新方案，把课堂所学与实践结合，让理论成果真正落地。经过近五个月层层选拔，
+      九支队伍晋级决赛，在"创新日"（Innovation Day）现场展示成果，最终由评审评出各奖项。
+    </p>
+    <p class="en">
+      The Challenge runs three tracks — <strong>Education, Healthcare and Finance</strong> — asking teams to
+      ground AI in real needs, connect classroom learning with practice, and turn theory into something that
+      works. After nearly five months of selection, nine finalist teams presented on Innovation Day, where
+      judges chose the awards.
+    </p>
+    <div class="tracks">
+      <div class="track"><div class="ic">🎓</div><div class="en">Education</div><div class="zh">教育</div></div>
+      <div class="track"><div class="ic">🩺</div><div class="en">Healthcare</div><div class="zh">医疗</div></div>
+      <div class="track"><div class="ic">📈</div><div class="en">Finance</div><div class="zh">金融</div></div>
+    </div>
+
+    <!-- SUBSECTION: partners & judges -->
+    <div class="sub-h"><span class="tag">02</span>行业伙伴与评审<span class="zh">Partners &amp; Judges</span></div>
+    <p>
+      本届大赛得到<strong>腾讯、复宏汉霖（Henlius）、躺着学（ChillPrep）</strong>等伙伴的支持。
+      决赛评审团汇聚商业、艺术、教育与科技等领域的专家学者，从创新性、实用价值与整体表现
+      等多个维度综合评估——让学生的方案接受真实世界标准的检验。
+    </p>
+    <p class="en">
+      This edition was supported by partners including <strong>Tencent, Henlius and ChillPrep</strong>. Our
+      finals jury brought together experts from business, art, education and technology, evaluating projects
+      on innovation, practical value and overall execution — holding student work to real-world standards.
+    </p>
+    <div class="partners">
+      <span class="chip">腾讯 Tencent</span>
+      <span class="chip">复宏汉霖 Henlius</span>
+      <span class="chip">躺着学 ChillPrep</span>
+      <span class="chip dku">昆山杜克大学 DKU 合作</span>
+    </div>
+
+    <!-- SUBSECTION: warm-ups -->
+    <div class="sub-h"><span class="tag">03</span>一路走来的活动<span class="zh">The Road There</span></div>
+    <p>
+      DIC 从来不只是一场比赛，而是一整套成长平台。过去一年，组委会通过<strong>企业参访、
+      嘉宾讲座、实践工作坊</strong>等多种形式，支持学生把想法一步步落地，并为每支队伍配备
+      导师，在项目推进中提供专业指导。
+    </p>
+    <p class="en">
+      DIC has never been just a competition — it's a full growth platform. Over the past year, the organizing
+      committee ran <strong>company visits, guest talks and hands-on workshops</strong>, and paired every team
+      with mentors for guidance as their projects took shape.
+    </p>
+    <p>
+      我们请来 Sancus Ventures 合伙人杜磊，与二十多位同学面对面聊连续创业与投资；也办过
+      原创的 <span class="hl m">"Idea-to-App with base44"</span> 与 Vibe Coding 工作坊——
+      让参与者现场把一个念头，变成一个能跑起来的应用原型。
+    </p>
+    <p class="en">
+      We hosted Du Lei, Partner at Sancus Ventures, for a candid conversation with 20+ students on serial
+      entrepreneurship and investing — and ran our original <span class="hl m">"Idea-to-App with base44"</span>
+      and Vibe Coding workshops, where participants turned a single idea into a working app prototype on the spot.
+    </p>
+
+    <!-- two smaller image slots -->
+    <div class="photo-pair">
+      <figure class="pair-item">
+        <div class="photo-frame"><img src="assets/panel.jpg" alt="Panel discussion with judges, moderated by Professor Lihua Xu · 决赛评委圆桌"></div>
+        <figcaption>决赛评委圆桌 · Panel with Judges</figcaption>
+      </figure>
+      <figure class="pair-item">
+        <div class="photo-frame"><img src="assets/talk.jpg" alt="Founder guest talk — a founder's story · 嘉宾讲座"></div>
+        <figcaption>嘉宾讲座 · Founder's Story</figcaption>
+      </figure>
+    </div>
+
+    <!-- quote -->
+    <div class="quote">
+      <div class="titlebar"><span class="dots"><i></i><i></i><i></i></span><span class="t-title">voices.txt</span></div>
+      <div class="qt-body">
+        <span class="mark">&ldquo;</span>
+        <blockquote>
+          「这一赛事已经从校内走向校外，正成为更具国际影响力的创新平台——持续汇聚拥有不同学科
+          与文化背景的创新青年，在现实情境中检验创意，在团队合作中完善方案。」
+        </blockquote>
+        <blockquote class="en-quote">
+          &ldquo;This competition has grown beyond campus into a platform with real international reach —
+          continually bringing together young innovators from different disciplines and cultures, testing
+          ideas against real-world conditions and refining them through teamwork.&rdquo;
+        </blockquote>
+        <div class="who">— <b>Nasir Memon</b> · Dean, Computer Science, Data Science &amp; Engineering, NYU Shanghai<br><span class="who-zh">上海纽约大学 计算机科学、数据科学与工程学部 主任</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== JOIN US ===================== -->
+  <section class="section join reveal">
+    <div class="sec-head">
+      <div class="q">Q</div>
+      <div class="label">Join us<span class="zh">加入我们</span></div>
+    </div>
+
+    <div class="join-win">
+      <div class="titlebar"><span class="dots"><i></i><i></i><i></i></span><span class="t-title">connect.exe</span></div>
+      <div class="join-body">
+        <div>
+          <div class="qr-box"><img id="qr" src="assets/qr.png" alt="DIC WeChat QR"></div>
+          <div class="qr-cap">扫码加入 · scan to join</div>
+        </div>
+        <div class="join-text">
+          <div class="big">和我们一起，把想法跑起来<br><small>Come build with us.</small></div>
+          <p style="margin-bottom:6px">无论你是科技新手还是资深玩家，都欢迎加入 DIC。扫码进群，或通过邮箱找到我们。</p>
+          <p class="en" style="margin-bottom:16px">Whether you're new to tech or a seasoned builder, you're welcome at DIC. Scan to join the group, or reach us by email.</p>
+          <div class="contacts">
+            <a class="contact mail" href="mailto:shanghai.dic@nyu.edu"><span class="k">Email 邮箱</span>shanghai.dic@nyu.edu</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TASKBAR FOOTER ===================== -->
+  <div class="taskbar">
+    <span class="start">⊞ Start</span>
+    <span>NYUSHDIC · Digital Innovation Community</span>
+    <span class="clock">2026</span>
+  </div>
+
+</div>
+
+<!-- QR embedded as base64 (self-contained). Swap the string to replace. -->
+
+
+<script>
+  // inject QR
+  
+  
+
+  // scroll reveal
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // loading bar fills when recap enters view
+  const fill=document.getElementById('fill'), pct=document.getElementById('pct');
+  const bio=new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){
+      fill.classList.add('go');
+      let n=0; const t=setInterval(()=>{ n+=3; if(n>=100){n=100;clearInterval(t);
+        pct.textContent='loading last year... 100% — 75 teams · 6 countries · 9 finalists · 3 tracks';}
+        else pct.textContent='loading last year... '+n+'%'; },48);
+      bio.unobserve(e.target);
+    }});
+  },{threshold:.4});
+  bio.observe(document.querySelector('.loadbar-wrap'));
+</script>
+</body>
+</html>
