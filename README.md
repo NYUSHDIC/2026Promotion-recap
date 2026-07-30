@@ -8,11 +8,10 @@ A single-page bilingual (中文 / English) site introducing **NYU Shanghai DIC**
 nyushdic-site/
 ├── index.html        ← the website (references images in assets/)
 ├── standalone.html   ← same site, all images embedded (one file, no assets/ needed)
-├── assets/
-│   ├── group.jpg      Innovation Day group photo (hero of the recap)
-│   ├── panel.jpg      Panel Discussion with Judges — 决赛评委圆桌
-│   ├── talk.jpg       Founder's Story guest talk — 嘉宾讲座
-│   └── qr.png         WeChat group QR (see note below)
+├── group.jpg      Innovation Day group photo (hero of the recap)
+├── panel.jpg      Panel Discussion with Judges — 决赛评委圆桌
+├── talk.jpg       Founder's Story guest talk — 嘉宾讲座
+└── qr.png         WeChat group QR (see note below)
 ├── README.md
 └── .gitignore
 ```
